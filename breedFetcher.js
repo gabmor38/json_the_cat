@@ -1,23 +1,26 @@
 const request = require('request');  // use the request library
 
-const breed = process.argv[2]; // grab the breed name from the node input.
+const fetchBreedDescription = function(breedName, callback) {
+  const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedName}`;
 
-const url = `https://api.thecatapi.com/v1/breeds/search?q=${breed}`;
-
-request.get(url, (err,res,body) => {
+  request(url, (error,res,body) => {
     
-  if (err) {
-    console.log("error:", err);
-  }
+    if (error) {
+      callback(error, null);
+    }
 
-  const data = JSON.parse(body);
+    const data = JSON.parse(body);
 
-  if (data.length === 0) {
-    console.log(`The breed ${breed} is not found`, null);
+    if (data.length === 0) {
+      callback(`The breed ${breedName} is not found`, null);
 
-  } else {
-    console.log(data[0].description);
-  }
+    } else {
+      callback(null, data[0].description);
+    }
     
-});
+  });
+
+};
+
+module.exports = { fetchBreedDescription };
 
