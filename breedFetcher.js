@@ -2,7 +2,6 @@ const request = require('request');  // use the request library
 
 const breed = process.argv[2]; // grab the breed name from the node input.
 
-//const findCat = function(breed, cb) {
 const url = `https://api.thecatapi.com/v1/breeds/search?q=${breed}`;
 
 request.get(url, (err,res,body) => {
